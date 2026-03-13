@@ -16,8 +16,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,6 +42,8 @@ public class AccountsController {
     private final Environment environment;
 
     private final AccountsContactInfoDto accountsContactInfoDto;
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(AccountsController.class);
 
     @Value("${build.version}")
     private String buildVersion;
@@ -194,20 +197,23 @@ public class AccountsController {
                     )
             )
     })
-    @Retry(name = "getBuildingInfo", fallbackMethod = "getBuildingInfoFallback")
+    @Retry(name = "getBuildingInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/build-info")
-    public ResponseEntity<String> getBuildInfo(){
+    public ResponseEntity<String> getBuildInfo() {
+        LOGGER.info("getBuildInfo() method Invoked");
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(buildVersion);
     }
 
-    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("0.9");
-    }
+//    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){
+// méthod de prueba para simular el fallback, se puede eliminar posteriormente
+//        LOGGER.info("getBuildInfoFallback() method Invoked");
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body("0.9");
+//    }
 
     @Operation(
             summary = "Get JAVA version information",
