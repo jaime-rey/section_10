@@ -1,0 +1,12 @@
+build:
+  version: "1.0"
+
+cards:
+  message: "Welcome to Banca Rey cards related prod APIs"
+  contactDetails:
+    name: "Jaime Rey - Developer"
+    email: "jaime@bancarey.com"
+  onCallSupport:
+    - (555) 555-1234
+    - (555) 523-1345
+
